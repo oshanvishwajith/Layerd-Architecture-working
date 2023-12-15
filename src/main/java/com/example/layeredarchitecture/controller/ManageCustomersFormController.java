@@ -1,5 +1,6 @@
 package com.example.layeredarchitecture.controller;
 
+import com.example.layeredarchitecture.dao.CustomerDAO;
 import com.example.layeredarchitecture.dao.CustomerDAOImpl;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
@@ -37,6 +38,9 @@ public class ManageCustomersFormController {
     public TextField txtCustomerAddress;
     public TableView<CustomerTM> tblCustomers;
     public JFXButton btnAddNewCustomer;
+
+    CustomerDAO customerDAO = new CustomerDAOImpl();
+
 
     public void initialize() {
         tblCustomers.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -79,7 +83,7 @@ public class ManageCustomersFormController {
                 tblCustomers.getItems().add(new CustomerTM(rst.getString("id"), rst.getString("name"), rst.getString("address")));
             }*/
 
-            CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+
             ArrayList<CustomerDTO> allCusomer = customerDAO.getAllCustomer();
             for(CustomerDTO c: allCusomer){
                 tblCustomers.getItems().
@@ -161,7 +165,6 @@ public class ManageCustomersFormController {
                 pstm.setString(3, address);
                 pstm.executeUpdate();*/
 
-                CustomerDAOImpl customerDAO = new CustomerDAOImpl();
                 CustomerDTO customerDTO = new CustomerDTO(id,name,address);
                 boolean saveCustomer = customerDAO.saveCustomer(customerDTO);
                 if (saveCustomer){
@@ -188,7 +191,7 @@ public class ManageCustomersFormController {
                 pstm.setString(2, address);
                 pstm.setString(3, id);
                 pstm.executeUpdate();*/
-                CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+
                 CustomerDTO customerDTO = new CustomerDTO(id,name,address);
                boolean updateCustomer = customerDAO.updateCustomer(customerDTO);
 
@@ -230,7 +233,7 @@ public class ManageCustomersFormController {
             PreparedStatement pstm = connection.prepareStatement("DELETE FROM Customer WHERE id=?");
             pstm.setString(1, id);
             pstm.executeUpdate();*/
-            CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+            CustomerDAO customerDAO = new CustomerDAOImpl();
             boolean isDeleted = customerDAO.deleteCustomer(id);
 
             tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
@@ -255,7 +258,7 @@ public class ManageCustomersFormController {
             } else {
                 return "C00-001";
             }*/
-            CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+
             String newId = customerDAO.generateNewId();
 
             return newId;

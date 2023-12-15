@@ -37,6 +37,8 @@ public class ManageItemsFormController {
     public TextField txtUnitPrice;
     public JFXButton btnAddNewItem;
 
+    ItemDAOImpl itemDAO = new ItemDAOImpl();
+
     public void initialize() {
         tblItems.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("code"));
         tblItems.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -78,7 +80,7 @@ public class ManageItemsFormController {
             /*while (rst.next()) {
                 tblItems.getItems().add(new ItemTM(rst.getString("code"), rst.getString("description"), rst.getBigDecimal("unitPrice"), rst.getInt("qtyOnHand")));
             }*/
-            ItemDAOImpl itemDAO = new ItemDAOImpl();
+
             ArrayList<ItemDTO> items =itemDAO.loadAllItems();
             for (ItemDTO itemDTO: items) {
                 ItemTM itemTM = new ItemTM(itemDTO.getCode(), itemDTO.getDescription(), itemDTO.getUnitPrice(), itemDTO.getQtyOnHand());
@@ -146,7 +148,7 @@ public class ManageItemsFormController {
             pstm.setString(1, code);
             pstm.executeUpdate();*/
 
-            ItemDAOImpl itemDAO = new ItemDAOImpl();
+
             boolean isDeleted = itemDAO.deleteItem(code);
 
             tblItems.getItems().remove(tblItems.getSelectionModel().getSelectedItem());
@@ -223,7 +225,7 @@ public class ManageItemsFormController {
                 pstm.setString(4, code);
                 pstm.executeUpdate();*/
 
-                ItemDAOImpl itemDAO = new ItemDAOImpl();
+
                 ItemDTO itemDTO = new ItemDTO(code,description,unitPrice,qtyOnHand);
                 boolean isUpdate= itemDAO.updateItem(itemDTO);
 
@@ -248,7 +250,7 @@ public class ManageItemsFormController {
         PreparedStatement pstm = connection.prepareStatement("SELECT code FROM Item WHERE code=?");
         pstm.setString(1, code);
         return pstm.executeQuery().next();*/
-        ItemDAOImpl itemDAO = new ItemDAOImpl();
+
         boolean isExist = itemDAO.existItem(code);
 
         return isExist;
@@ -266,7 +268,7 @@ public class ManageItemsFormController {
             } else {
                 return "I00-001";
             }*/
-            ItemDAOImpl itemDAO = new ItemDAOImpl();
+
             String newId = itemDAO.generateId();
 
             return newId;

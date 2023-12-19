@@ -83,8 +83,7 @@ public class ManageCustomersFormController {
                 tblCustomers.getItems().add(new CustomerTM(rst.getString("id"), rst.getString("name"), rst.getString("address")));
             }*/
 
-
-            ArrayList<CustomerDTO> allCusomer = customerDAO.getAllCustomer();
+            ArrayList<CustomerDTO> allCusomer = customerDAO.getAll();
             for(CustomerDTO c: allCusomer){
                 tblCustomers.getItems().
                                         add(new CustomerTM(c.getId(),c.getName(),c.getAddress()));
@@ -165,11 +164,11 @@ public class ManageCustomersFormController {
                 pstm.setString(3, address);
                 pstm.executeUpdate();*/
 
-                CustomerDTO customerDTO = new CustomerDTO(id,name,address);
-                boolean saveCustomer = customerDAO.saveCustomer(customerDTO);
-                if (saveCustomer){
-                    tblCustomers.getItems().add(new CustomerTM(id, name, address));                }
-
+                CustomerDTO customerDTO = new CustomerDTO(id, name, address);
+                boolean saveCustomer = customerDAO.save(customerDTO);
+                if (saveCustomer) {
+                    tblCustomers.getItems().add(new CustomerTM(id, name, address));
+                }
 
                 /*tblCustomers.getItems().add(new CustomerTM(id, name, address));*/
             } catch (SQLException e) {
@@ -193,7 +192,7 @@ public class ManageCustomersFormController {
                 pstm.executeUpdate();*/
 
                 CustomerDTO customerDTO = new CustomerDTO(id,name,address);
-               boolean updateCustomer = customerDAO.updateCustomer(customerDTO);
+               boolean updateCustomer = customerDAO.update(customerDTO);
 
 
 
@@ -215,10 +214,13 @@ public class ManageCustomersFormController {
 
 
     boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getDbConnection().getConnection();
+        /*Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("SELECT id FROM Customer WHERE id=?");
         pstm.setString(1, id);
-        return pstm.executeQuery().next();
+        return pstm.executeQuery().next();*/
+        boolean existed = customerDAO.exist(id);
+        return existed;
+
     }
 
 
@@ -234,7 +236,7 @@ public class ManageCustomersFormController {
             pstm.setString(1, id);
             pstm.executeUpdate();*/
             CustomerDAO customerDAO = new CustomerDAOImpl();
-            boolean isDeleted = customerDAO.deleteCustomer(id);
+            boolean isDeleted = customerDAO.delete(id);
 
             tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
             tblCustomers.getSelectionModel().clearSelection();

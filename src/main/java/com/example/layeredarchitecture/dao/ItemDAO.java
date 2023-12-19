@@ -6,8 +6,8 @@ import com.example.layeredarchitecture.model.ItemDTO;
 import java.sql.*;
 import java.util.ArrayList;
 
-public interface ItemDAO {
-     ArrayList<ItemDTO> loadAllItems() throws SQLException, ClassNotFoundException ;
+public interface ItemDAO extends CrudDAO<ItemDTO>{
+    /* ArrayList<ItemDTO> loadAllItems() throws SQLException, ClassNotFoundException ;
 
      boolean saveItem(ItemDTO itemDTO) throws SQLException, ClassNotFoundException ;
 
@@ -18,4 +18,5 @@ public interface ItemDAO {
      boolean updateItem(ItemDTO itemDTO) throws SQLException, ClassNotFoundException ;
      boolean  existItem(String code) throws SQLException, ClassNotFoundException ;
 
+      ItemDTO findItem(String newItemCode) throws SQLException, ClassNotFoundException;*/
 }

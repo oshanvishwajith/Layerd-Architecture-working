@@ -81,7 +81,7 @@ public class ManageItemsFormController {
                 tblItems.getItems().add(new ItemTM(rst.getString("code"), rst.getString("description"), rst.getBigDecimal("unitPrice"), rst.getInt("qtyOnHand")));
             }*/
 
-            ArrayList<ItemDTO> items =itemDAO.loadAllItems();
+            ArrayList<ItemDTO> items =itemDAO.getAll();
             for (ItemDTO itemDTO: items) {
                 ItemTM itemTM = new ItemTM(itemDTO.getCode(), itemDTO.getDescription(), itemDTO.getUnitPrice(), itemDTO.getQtyOnHand());
                 tblItems.getItems().add(itemTM);
@@ -149,7 +149,7 @@ public class ManageItemsFormController {
             pstm.executeUpdate();*/
 
 
-            boolean isDeleted = itemDAO.deleteItem(code);
+            boolean isDeleted = itemDAO.delete(code);
 
             tblItems.getItems().remove(tblItems.getSelectionModel().getSelectedItem());
             tblItems.getSelectionModel().clearSelection();
@@ -199,7 +199,7 @@ public class ManageItemsFormController {
                 */
                 ItemDAOImpl itemDAO = new ItemDAOImpl();
                 ItemDTO itemDTO = new ItemDTO(code,description,unitPrice,qtyOnHand);
-                boolean isSaved = itemDAO.saveItem(itemDTO);
+                boolean isSaved = itemDAO.save(itemDTO);
 
                 if (isSaved){
                     tblItems.getItems().add(new ItemTM(code,description,unitPrice,qtyOnHand));
@@ -227,7 +227,7 @@ public class ManageItemsFormController {
 
 
                 ItemDTO itemDTO = new ItemDTO(code,description,unitPrice,qtyOnHand);
-                boolean isUpdate= itemDAO.updateItem(itemDTO);
+                boolean isUpdate= itemDAO.update(itemDTO);
 
                 ItemTM selectedItem = tblItems.getSelectionModel().getSelectedItem();
                 selectedItem.setDescription(description);
@@ -251,7 +251,7 @@ public class ManageItemsFormController {
         pstm.setString(1, code);
         return pstm.executeQuery().next();*/
 
-        boolean isExist = itemDAO.existItem(code);
+        boolean isExist = itemDAO.exist(code);
 
         return isExist;
     }
@@ -269,7 +269,7 @@ public class ManageItemsFormController {
                 return "I00-001";
             }*/
 
-            String newId = itemDAO.generateId();
+            String newId = itemDAO.generateNewId();
 
             return newId;
 
